@@ -1,0 +1,27 @@
+{
+  "name": "d3-cam16",
+  "version": "0.0.1",
+  "description": "CIECAM16 color appearance model.",
+  "main": "build/d3-cam16.js",
+  "scripts": {
+    "pretest": "rollup -f umd -g d3-color:d3 -n d3 -o build/d3-cam16.js -- index.js",
+    "test": "tape 'test/**/*-test.js'",
+    "buildCam16Definition": "rollup -f umd -g d3-color:d3 -n d3 -o build/cam16Definition.js -- test/cam16Definition-build.js",
+    "testCam16Definition":  "tape 'test/cam16Definition-test.js'",
+    "buildXyz2Rgb": "rollup -f umd -g d3-color:d3 -n d3 -o build/xyz2rgb.js -- test/xyz2rgb-build.js",
+    "testXyz2Rgb":  "tape 'test/xyz2rgb-test.js'"
+  },
+  "license": "BSD-3-Clause",
+  "author": {
+    "name": "Connor Gramazio",
+    "url": "https://gramaz.io"
+  },
+  "dependencies": {
+    "d3-color": "^1.0.3"
+  },
+  "devDependencies": {
+    "rollup": "^0.53.3",
+    "tape": "^4.8.0",
+    "uglify-js": "^3.3.5"
+  }
+}

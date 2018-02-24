@@ -1,0 +1,84 @@
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<script src="node_modules/d3-color/build/d3-color.js"></script>
+<script src="build/d3-cam16.js"></script>
+
+
+<svg id="seqLogo" width="250" height="25" style="background: red; margin-top: 50px; border: 1px solid rgb(0, 0, 0);">
+    <rect x="0" y="0" width="25" height="25" style="fill: rgb(173, 195, 189);"></rect>
+    <rect x="25" y="0" width="25" height="25" style="fill: rgb(156, 177, 179);"></rect>
+    <rect x="50" y="0" width="25" height="25" style="fill: rgb(138, 159, 169);"></rect>
+    <rect x="75" y="0" width="25" height="25" style="fill: rgb(120, 143, 162);"></rect>
+    <rect x="100" y="0" width="25" height="25" style="fill: rgb(101, 127, 155);"></rect>
+    <rect x="125" y="0" width="25" height="25" style="fill: rgb(83, 111, 151);"></rect>
+    <rect x="150" y="0" width="25" height="25" style="fill: rgb(65, 95, 148);"></rect>
+    <rect x="175" y="0" width="25" height="25" style="fill: rgb(48, 78, 149);"></rect>
+    <rect x="200" y="0" width="25" height="25" style="fill: rgb(31, 58, 153);"></rect>
+    <rect x="225" y="0" width="25" height="25" style="fill: rgb(25, 25, 166);"></rect>
+  </svg>
+
+<canvas id="crosssection_10" width="300" height="300"></canvas>
+<canvas id="crosssection_20" width="300" height="300"></canvas>
+<canvas id="crosssection_30" width="300" height="300"></canvas>
+<canvas id="crosssection_40" width="300" height="300"></canvas>
+<canvas id="crosssection_50" width="300" height="300"></canvas>
+<canvas id="crosssection_60" width="300" height="300"></canvas>
+<canvas id="crosssection_70" width="300" height="300"></canvas>
+<canvas id="crosssection_80" width="300" height="300"></canvas>
+<canvas id="crosssection_90" width="300" height="300"></canvas>
+
+<script>
+
+// function render(name, J) {
+//   var canvas = document.getElementById(name),
+//       context = canvas.getContext("2d");
+//
+//     var height = canvas.height,
+//         width = canvas.width,
+//         img = context.createImageData(width, height);
+//
+//     var c,y,x,i=-1;
+//     for(y=height;y>0;y--) {
+//       for(x=width;x>0;x--) {
+//         c = d3.cam16.fromJab(J, -(x-width/2)/100, (y-height/2)/100);
+//         c = c.rgb();
+//         if(c.displayable() === false) c = d3.rgb(0,0,0);
+//         img.data[++i] = c.r;
+//         img.data[++i] = c.g;
+//         img.data[++i] = c.b;
+//         img.data[++i] = 255;
+//       }
+//     }
+//
+//     context.putImageData(img, 0, 0);
+// }
+//
+// for(var i = 10; i < 100; i+=10) {
+//   render("crosssection_"+i, i);
+// }
+
+initJabSequence();
+function initJabSequence() {
+  function randChannel() { return Math.random()*255; }
+  var svg = d3.select('#seqLogo'),
+      start = '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6),
+      end = '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6);
+
+  // start = d3.cam16(start);
+  // end = d3.cam16(end);
+
+  var interp = d3.scaleLinear().domain([0, 9])
+          .interpolate(d3.interpolateCam16)
+          // .range([d3.cam16.fromJab(50, -50, 0), d3.cam16.fromJab(50,50,0)]);
+          .range([d3.rgb(start), d3.rgb(end)]);
+
+  svg.selectAll('rect').each(function(d,i) {
+    console.log(interp(i));
+    d3.select(this).style('fill', interp(i));
+  });
+}
+
+
+</script>
+
+<script src="build/cam16Definition.js"></script>

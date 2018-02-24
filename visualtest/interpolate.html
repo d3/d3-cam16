@@ -1,0 +1,100 @@
+<body>
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<script src="../node_modules/d3-color/build/d3-color.js"></script>
+<script src="../build/d3-cam16.js"></script>
+
+
+<!-- <svg id="seqLogo" width="250" height="25" style="background: red; margin-top: 50px; border: 1px solid rgb(0, 0, 0);">
+  <rect x="0" y="0" width="25" height="25" style="fill: rgb(173, 195, 189);"></rect>
+  <rect x="25" y="0" width="25" height="25" style="fill: rgb(156, 177, 179);"></rect>
+  <rect x="50" y="0" width="25" height="25" style="fill: rgb(138, 159, 169);"></rect>
+  <rect x="75" y="0" width="25" height="25" style="fill: rgb(120, 143, 162);"></rect>
+  <rect x="100" y="0" width="25" height="25" style="fill: rgb(101, 127, 155);"></rect>
+  <rect x="125" y="0" width="25" height="25" style="fill: rgb(83, 111, 151);"></rect>
+  <rect x="150" y="0" width="25" height="25" style="fill: rgb(65, 95, 148);"></rect>
+  <rect x="175" y="0" width="25" height="25" style="fill: rgb(48, 78, 149);"></rect>
+  <rect x="200" y="0" width="25" height="25" style="fill: rgb(31, 58, 153);"></rect>
+  <rect x="225" y="0" width="25" height="25" style="fill: rgb(25, 25, 166);"></rect>
+</svg> -->
+
+<script>
+
+function buildInterpolationSvg(steps) {
+  if(steps === undefined) steps = 10;
+
+  var size = 25,
+      width = size*steps,
+      svg = d3.select("body").append("svg")
+          .attr("width", width).attr("height", size)
+          .style("border", "1px solid rgb(0,0,0)")
+          .style("display", "block")
+          .style("margin-top", "1em");
+
+  var xs = Array(steps).fill(0).map((d,i) => i*size);
+
+  svg.selectAll("rect").data(xs).enter().append("rect")
+      .attr("x", d => d).attr("y", 0).attr("width", size).attr("height", size);
+
+  return svg;
+}
+
+function makeInterpolation(start, end) {
+  d3.select("body").append("p").text(start + ", " + end);
+  var svg = buildInterpolationSvg(10);
+
+  var interp = d3.scaleLinear().domain([0, 9])
+        .interpolate(d3.interpolateCam16)
+        .range([d3.rgb(start), d3.rgb(end)]);
+
+  svg.selectAll('rect').each(function(d,i) {
+      console.log(">",i, interp(i));
+      d3.select(this).style('fill', interp(i));
+  });
+
+  return svg;
+}
+function randRgbChannel() { return Math.random()*255; }
+function randRgb() {
+  return d3.rgb(randRgbChannel(), randRgbChannel(), randRgbChannel());
+}
+function randRgbHex() { return '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6); }
+
+// var bw = makeInterpolation(d3.rgb("rgb(0,0,0)"), d3.rgb("rgb(255,255,255)"));
+//
+// bw.attr("height", 75);
+// bw.append("g").attr("transform", "translate(0,25)")
+//     .selectAll("rect").data(Array(10)).enter().append("rect")
+//         .attr("x", (d,i) => i*25).attr("y", 0)
+//         .attr("width", 25).attr("height", 25)
+//         .attr("fill", (d,i) => d3.interpolateRgb("black", "white")(i/9));
+// bw.append("g").attr("transform", "translate(0,50)")
+//     .selectAll("rect").data(Array(10)).enter().append("rect")
+//         .attr("x", (d,i) => i*25).attr("y", 0)
+//         .attr("width", 25).attr("height", 25)
+//         .attr("fill", (d,i) => d3.interpolateLab("black", "white")(i/9));
+
+var blue = makeInterpolation(d3.rgb("blue"), d3.rgb("white"));
+
+blue.attr("height", 75);
+blue.append("g").attr("transform", "translate(0,25)")
+    .selectAll("rect").data(Array(10)).enter().append("rect")
+        .attr("x", (d,i) => i*25).attr("y", 0)
+        .attr("width", 25).attr("height", 25)
+        .attr("fill", (d,i) => d3.interpolateRgb("blue", "white")(i/9));
+blue.append("g").attr("transform", "translate(0,50)")
+    .selectAll("rect").data(Array(10)).enter().append("rect")
+        .attr("x", (d,i) => i*25).attr("y", 0)
+        .attr("width", 25).attr("height", 25)
+        .attr("fill", (d,i) => d3.interpolateLab("blue", "white")(i/9));
+
+// for(var i = 0; i < 10; i++) {
+//   makeInterpolation(randRgb(), randRgb());
+// }
+
+// makeInterpolation(d3.rgb("rgb(0,0,255)"), d3.rgb("orange"));
+
+
+
+</script>
+</body>
