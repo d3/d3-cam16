@@ -19,6 +19,7 @@
   "dependencies": {
     "d3-color": "^1.0.3"
   },
+  "sideEffects": false,
   "devDependencies": {
     "rollup": "^0.53.3",
     "tape": "^4.8.0",
