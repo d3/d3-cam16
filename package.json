@@ -17,7 +17,7 @@
     "url": "https://gramaz.io"
   },
   "dependencies": {
-    "d3-color": "^1.0.3"
+    "d3-color": "^3.1.0"
   },
   "devDependencies": {
     "rollup": "^0.53.3",
